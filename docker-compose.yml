@@ -1,15 +1,32 @@
 version: "3.9"
 
 services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "YourStrong@Passw0rd"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
 
   backend:
     build: ./Backend
     container_name: backend
+    depends_on:
+      - sqlserver
     ports:
       - "8081:8080"
 
   frontend:
     build: ./Frontend
     container_name: frontend
+    depends_on:
+      - backend
     ports:
       - "80:80"
+
+volumes:
+  sqlserver_data:
