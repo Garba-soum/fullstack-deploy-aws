@@ -5,7 +5,6 @@ Backend/*.log
 
 # Frontend
 Frontend/node_modules
-Frontend/dist
 Frontend/.angular
 
 # System
