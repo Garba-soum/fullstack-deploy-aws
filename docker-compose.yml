@@ -1,12 +1,10 @@
-version: "3.9"
-
 services:
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: sqlserver
     environment:
       ACCEPT_EULA: "Y"
-      SA_PASSWORD: "YourStrong@Passw0rd"
+      SA_PASSWORD: "YourStrong!Passw0rd"
     ports:
       - "1433:1433"
     volumes:
@@ -19,6 +17,13 @@ services:
       - sqlserver
     ports:
       - "8081:8080"
+    environment:
+      APP_JWT_SECRET: "TestSecretKeyTestSecretKeyTestSecretKey123456"
+      APP_JWT_ACCESS_EXPIRATION: "3600000"
+      APP_JWT_REFRESH_EXPIRATION: "604800000"
+      SPRING_DATASOURCE_URL: "jdbc:sqlserver://sqlserver:1433;databaseName=appdb;encrypt=false;trustServerCertificate=true"
+      SPRING_DATASOURCE_USERNAME: "sa"
+      SPRING_DATASOURCE_PASSWORD: "YourStrong!Passw0rd"
 
   frontend:
     build: ./Frontend
