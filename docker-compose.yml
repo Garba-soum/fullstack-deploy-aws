@@ -4,7 +4,8 @@ services:
     container_name: sqlserver
     environment:
       ACCEPT_EULA: "Y"
-      MSSQL_SA_PASSWORD: "YourStrong!Passw0rd"
+      MSSQL_SA_PASSWORD: "StrongPassw0rd!123"
+      SA_PASSWORD: "StrongPassw0rd!123"
     ports:
       - "1433:1433"
     volumes:
@@ -25,7 +26,7 @@ services:
         -Dapp.jwt.refresh-expiration=604800000
         -Dspring.datasource.url=jdbc:sqlserver://sqlserver:1433;databaseName=appdb;encrypt=false;trustServerCertificate=true
         -Dspring.datasource.username=sa
-        -Dspring.datasource.password=YourStrong!Passw0rd
+        -Dspring.datasource.password=StrongPassw0rd!123
 
   frontend:
     build: ./Frontend
