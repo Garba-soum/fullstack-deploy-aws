@@ -20,13 +20,12 @@ services:
     ports:
       - "8081:8080"
     environment:
-      JAVA_TOOL_OPTIONS: >-
-        -Dapp.jwt.secret=TestSecretKeyTestSecretKeyTestSecretKey123456
-        -Dapp.jwt.access-expiration=3600000
-        -Dapp.jwt.refresh-expiration=604800000
-        -Dspring.datasource.url=jdbc:sqlserver://sqlserver:1433;databaseName=appdb;encrypt=false;trustServerCertificate=true
-        -Dspring.datasource.username=sa
-        -Dspring.datasource.password=StrongPassw0rd!123
+      APP_JWT_SECRET: "TestSecretKeyTestSecretKeyTestSecretKey123456"
+      APP_JWT_ACCESS_EXPIRATION: "3600000"
+      APP_JWT_REFRESH_EXPIRATION: "604800000"
+      SPRING_DATASOURCE_URL: "jdbc:sqlserver://sqlserver:1433;databaseName=appdb;encrypt=false;trustServerCertificate=true"
+      SPRING_DATASOURCE_USERNAME: "sa"
+      SPRING_DATASOURCE_PASSWORD: "StrongPassw0rd!123"
 
   frontend:
     build: ./Frontend

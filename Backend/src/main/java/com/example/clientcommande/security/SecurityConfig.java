@@ -65,9 +65,11 @@ public class SecurityConfig {
 
         // Origine Angular/React
         config.setAllowedOriginPatterns(Arrays.asList(
-                "http://localhost:4200", // Angular Docker
-                "http://localhost:4300", // React Docker
-                "http://localhost:5173"  // React vite dev
+                "http://localhost:4200",
+                "http://localhost:4300",
+                "http://localhost:5173",
+                "http://13.39.13.100",
+                "http://13.39.13.100:*"  // React vite dev
         ));
 
         // Méthodes autorisées
