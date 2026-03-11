@@ -5,6 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,32 +35,34 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
-        // 🔓 1) Ne PAS filtrer les endpoints d'authentification (/auth/...)
         String path = request.getServletPath();
+
+        // Ne pas filtrer les requêtes preflight CORS
+        if (HttpMethod.OPTIONS.matches(request.getMethod())) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        // Ne pas filtrer les endpoints publics d'auth
         if (path.startsWith("/auth")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // 🔐 2) Récupérer le header Authorization
         String authHeader = request.getHeader("Authorization");
 
-        // Si pas de header ou pas "Bearer ", on laisse passer (sera bloqué plus loin si besoin)
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // 🔐 3) Récupérer le token et le username
         String jwt = authHeader.substring(7);
         String username = jwtService.extractUsername(jwt);
 
-        // 🔐 4) Si pas déjà authentifié et username présent → on vérifie le token
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-            // (optionnel mais recommandé) : vérifier que le token est valide
             if (jwtService.isTokenValid(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(
@@ -76,7 +79,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
 
-        // 5) Continuer la chaîne de filtres
         filterChain.doFilter(request, response);
     }
 }
