@@ -68,8 +68,8 @@ public class SecurityConfig {
                 "http://localhost:4200",
                 "http://localhost:4300",
                 "http://localhost:5173",
-                "http://13.39.13.100",
-                "http://13.39.13.100:*"  // React vite dev
+                "http://35.180.196.56",
+                "http://35.180.196.56:*"  // React vite dev
         ));
 
         // Méthodes autorisées
