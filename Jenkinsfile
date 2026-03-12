@@ -2,15 +2,9 @@ pipeline {
     agent any
 
     stages {
-        stage('Build Backend Image') {
+        stage('Build Images with Compose') {
             steps {
-                sh 'docker build --no-cache -t backend ./Backend'
-            }
-        }
-
-        stage('Build Frontend Image') {
-            steps {
-                sh 'docker build --no-cache -t frontend ./Frontend'
+                sh 'docker-compose build --no-cache'
             }
         }
 
