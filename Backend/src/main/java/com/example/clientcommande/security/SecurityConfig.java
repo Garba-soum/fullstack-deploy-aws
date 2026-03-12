@@ -53,8 +53,8 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowedOriginPatterns(Arrays.asList(
-                "http://35.180.196.56",
-                "http://35.180.196.56:*",
+                "http://13.39.155.74",
+                "http://13.39.155.74:*",
                 "http://localhost:4200",
                 "http://localhost:4300",
                 "http://localhost:5173"
