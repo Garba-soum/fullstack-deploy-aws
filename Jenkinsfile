@@ -4,20 +4,20 @@ pipeline {
     stages {
         stage('Build Backend Image') {
             steps {
-                sh 'docker build -t backend ./Backend'
+                sh 'docker build --no-cache -t backend ./Backend'
             }
         }
 
         stage('Build Frontend Image') {
             steps {
-                sh 'docker build -t frontend ./Frontend'
+                sh 'docker build --no-cache -t frontend ./Frontend'
             }
         }
 
         stage('Deploy Containers') {
             steps {
                 sh 'docker-compose down || true'
-                sh 'docker-compose up -d'
+                sh 'docker-compose up -d --force-recreate'
             }
         }
     }
