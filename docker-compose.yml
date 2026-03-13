@@ -5,48 +5,46 @@ services:
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: sqlserver
-    restart: always
     environment:
       ACCEPT_EULA: "Y"
+      SA_PASSWORD: "YourStrong@Passw0rd"
       MSSQL_SA_PASSWORD: "YourStrong@Passw0rd"
     ports:
       - "1433:1433"
     volumes:
       - sqlserver_data:/var/opt/mssql
-    healthcheck:
-      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'YourStrong@Passw0rd' -C -Q 'SELECT 1' || exit 1"]
-      interval: 15s
-      timeout: 10s
-      retries: 20
-      start_period: 40s
+
 
   backend:
     build: ./Backend
     container_name: backend
     depends_on:
-      sqlserver:
-        condition: service_healthy
+      - sqlserver
     restart: always
     ports:
       - "8081:8080"
+
     environment:
       SPRING_DATASOURCE_URL: jdbc:sqlserver://sqlserver:1433;databaseName=appdb;encrypt=false;trustServerCertificate=true
       SPRING_DATASOURCE_USERNAME: sa
       SPRING_DATASOURCE_PASSWORD: YourStrong@Passw0rd
+
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.SQLServerDialect
+
       APP_JWT_SECRET: TestSecretKeyTestSecretKeyTestSecretKey123456
       APP_JWT_ACCESS_EXPIRATION: 3600000
       APP_JWT_REFRESH_EXPIRATION: 604800000
+
 
   frontend:
     build: ./Frontend
     container_name: frontend
     depends_on:
       - backend
-    restart: always
     ports:
       - "80:80"
+
 
 volumes:
   sqlserver_data:
