@@ -19,7 +19,7 @@ import java.time.LocalDate;
 public class CommandeDTO {
 
     @NotBlank(message = "La description est obligatoire")
-    @Size(min = 3, max = 200, message = "La description doit contenire entre 3 et 200 caratères")
+    @Size(min = 2, max = 200, message = "La description doit contenire entre 3 et 200 caratères")
     private String description;
 
     @NotNull(message = "Le montant est obligatoire")
